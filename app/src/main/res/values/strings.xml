@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">memo</string>
+    <string name="mcontent">write</string>
+    <string name="mdate">date</string>
+</resources>
