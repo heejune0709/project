@@ -8,11 +8,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-public class ShowMyData extends Activity {
+public class SHOW extends Activity {
     int current = 0;
     Cursor cursor;
     TextView date;
-    TextView t1;
+    TextView con;
     String memo_content;
     String memo_date;
     int number;
@@ -23,11 +23,11 @@ public class ShowMyData extends Activity {
         setContentView(R.layout.show);
 
         date = (TextView) findViewById(R.id.date);
-        t1 = (TextView) findViewById(R.id.t1);
+        con = (TextView) findViewById(R.id.t1);
 
         try {
-            DBManager dbmgr = new DBManager(this);
-            SQLiteDatabase sdb = dbmgr.getReadableDatabase();
+            DATA dat0 = new DATA(this);
+            SQLiteDatabase sdb = dat0.getReadableDatabase();
             cursor = sdb.query("memoTB", null, null, null, null, null, null);
             number = cursor.getCount();
             cursor.moveToFirst();
@@ -41,46 +41,19 @@ public class ShowMyData extends Activity {
                 memo_date = cursor.getString(1);
             }
             cursor.close();
-            dbmgr.close();
+            dat0.close();
 
         } catch (SQLiteException exception) {
 
         }
         date.setText(memo_content);
-        t1.setText(memo_date);
+        con.setText(memo_date);
     }
-    public void nextData (View v) {
-        try {
-            DBManager dbmgr = new DBManager(this);
-            SQLiteDatabase sdb = dbmgr.getReadableDatabase();
-            cursor = sdb.query("memoTB", null, null, null, null, null, null);
-            if (number == 0) {
-                current = 0;
-            }
-            if (cursor.getCount() > 0 && current <= number) {
-                current += 1;
-                if (current >= number) {
-                    current = number;
-                }
-                cursor.moveToPosition(current - 1);
 
-                memo_content = cursor.getString(0);
-                memo_date = cursor.getString(1);
-            }
-            cursor.close();
-            dbmgr.close();
-
-        } catch (SQLiteException exception) {
-
-        }
-        date.setText(memo_content);
-        t1.setText(memo_date);
-
-    }
     public void previousData (View v) {
         try {
-            DBManager dbmgr = new DBManager(this);
-            SQLiteDatabase sdb = dbmgr.getReadableDatabase();
+            DATA dat2 = new DATA(this);
+            SQLiteDatabase sdb = dat2.getReadableDatabase();
             cursor = sdb.query("memoTB", null, null, null, null, null, null);
             if (number == 0) {
                 current = 0;
@@ -96,13 +69,41 @@ public class ShowMyData extends Activity {
                 memo_date = cursor.getString(1);
             }
             cursor.close();
-            dbmgr.close();
+            dat2.close();
 
         } catch (SQLiteException exception) {
 
         }
         date.setText(memo_content);
-        t1.setText(memo_date);
+        con.setText(memo_date);
+
+    }
+    public void nextData (View v) {
+        try {
+            DATA dat = new DATA(this);
+            SQLiteDatabase sdb = dat.getReadableDatabase();
+            cursor = sdb.query("memoTB", null, null, null, null, null, null);
+            if (number == 0) {
+                current = 0;
+            }
+            if (cursor.getCount() > 0 && current <= number) {
+                current += 1;
+                if (current >= number) {
+                    current = number;
+                }
+                cursor.moveToPosition(current - 1);
+
+                memo_content = cursor.getString(0);
+                memo_date = cursor.getString(1);
+            }
+            cursor.close();
+            dat.close();
+
+        } catch (SQLiteException exception) {
+
+        }
+        date.setText(memo_content);
+        con.setText(memo_date);
 
     }
 
